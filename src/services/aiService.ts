@@ -15,4 +15,10 @@ export const aiService = {
     });
     return data.category;
   },
+
+  /** Claude-generated budget recommendations (Markdown text). */
+  async getBudgetAdvice(): Promise<string> {
+    const { data } = await api.get<{ advice: string }>('/api/ai/budget-advice');
+    return data.advice;
+  },
 };

@@ -26,7 +26,13 @@ export function budgetPercent(budget: BudgetStatus): number {
 
 export function budgetLevel(budget: BudgetStatus): BudgetLevel {
   const pct = budgetPercent(budget);
-  if (pct > 100) return 'exceeded';
-  if (pct >= 80) return 'warning';
-  return 'ok';
+  if (pct > 100) return 'exceeded'; // red
+  if (pct >= 70) return 'warning'; // amber (70–100%)
+  return 'ok'; // green (<70%)
 }
+
+export const BUDGET_LEVEL_COLOR: Record<BudgetLevel, string> = {
+  ok: '#34c759',
+  warning: '#ff9f0a',
+  exceeded: '#ff3b30',
+};

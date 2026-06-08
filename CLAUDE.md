@@ -47,6 +47,8 @@ Path alias: `@/*` maps to the project root, so import as `@/src/...`.
     - request interceptor attaches the JWT.
     - response interceptor: 401 on a protected request -> clears session via a
       handler registered by AuthContext (setUnauthorizedHandler) -> nav falls back to login.
+    - getApiErrorMessage(error, fallback) helper: extracts the API's { message }
+      from an error body (e.g. 409/400) for user-facing messages.
   - src/services/authService.ts — POST /api/auth/login and /api/auth/register,
     with HTTP errors translated to user-friendly messages.
   - src/services/authStorage.ts — persists/restores { token, user } in AsyncStorage.
@@ -107,7 +109,22 @@ Path alias: `@/*` maps to the project root, so import as `@/src/...`.
   - NOTE: GET /api/transactions only filters by date range server-side (type &
     category params are IGNORED) -> type/category filtering is done client-side.
     GET /api/categories returns 500 -> category list derived from loaded txns.
-- Remaining tab screens (Budgets, Alerts) are still placeholders.
+- BUDGETS built (src/screens/BudgetsScreen.tsx):
+  - Monthly selector (prev/next) -> GET /api/budgets?month&year (filters
+    server-side); budget cards with ProgressBar colored by budgetLevel
+    (green <70%, amber 70-100%, red >100% — threshold updated from 80 to 70),
+    "$spent of $limit" and % used; Add budget sheet (BudgetFormSheet:
+    category + monthly limit) -> POST /api/budgets {category,limitAmount,month,year};
+    pull-to-refresh; AI Budget Advice card (GET /api/ai/budget-advice ->
+    {advice} MARKDOWN, rendered by src/components/MarkdownText.tsx) with a
+    refresh button.
+  - budgetService is now getBudgets(month?,year?) + createBudget (dashboard
+    updated to call getBudgets). aiService.getBudgetAdvice added.
+    BUDGET_LEVEL_COLOR moved into utils/finance.
+  - NOTE: GET /api/budgets/status is now per-category (requires ?category=,
+    returns {budget, percentUsed}); the LIST uses GET /api/budgets and computes
+    % client-side. (The old 500 on /status is gone.)
+- Remaining tab screen (Alerts) is still a placeholder.
 
 ## API Base URL
 Dev: auto-detected LAN host (so physical devices reach the local server)

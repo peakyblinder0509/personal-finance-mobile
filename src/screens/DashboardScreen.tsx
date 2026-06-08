@@ -161,7 +161,7 @@ function BudgetHealthCard() {
   const scheme = useColorScheme();
   const colors = Colors[scheme];
 
-  const fetcher = useCallback(() => budgetService.getStatus(), []);
+  const fetcher = useCallback(() => budgetService.getBudgets(), []);
   const { data, loading, error, reload } = useApi(fetcher);
   useFocusEffect(useCallback(() => { void reload(); }, [reload]));
 

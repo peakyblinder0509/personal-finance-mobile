@@ -74,6 +74,14 @@ export interface SpendingSummary {
   summary: string;
 }
 
+/** Payload for creating a budget. */
+export interface BudgetInput {
+  category: string;
+  limitAmount: number;
+  month: number;
+  year: number;
+}
+
 /** Payload for creating a transaction. */
 export interface TransactionInput {
   accountId: string;

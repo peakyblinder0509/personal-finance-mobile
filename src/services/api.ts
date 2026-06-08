@@ -78,3 +78,21 @@ api.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+
+// Extract a user-facing message from a failed request. The API returns errors as
+// { status, message, timestamp }, so we surface `message` (e.g. the 409 "budget
+// already exists" or a 400 validation message) instead of axios's generic
+// "Request failed with status code 409".
+export function getApiErrorMessage(error: unknown, fallback: string): string {
+  if (axios.isAxiosError(error)) {
+    if (!error.response) {
+      return 'Cannot reach the server. Check your connection.';
+    }
+    const data = error.response.data;
+    if (typeof data === 'object' && data !== null && 'message' in data) {
+      return String((data as { message: unknown }).message);
+    }
+    return fallback;
+  }
+  return fallback;
+}
