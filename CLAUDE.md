@@ -73,6 +73,19 @@ Path alias: `@/*` maps to the project root, so import as `@/src/...`.
   - KNOWN BACKEND BUGS: GET /api/budgets/status and GET /api/alerts/count return
     500 (even with data). Services fall back to GET /api/budgets and
     GET /api/alerts respectively (marked FIXME(backend)); remove once fixed.
+- ACCOUNTS built (src/screens/AccountsScreen.tsx) + new "Accounts" bottom tab
+  (app/(app)/accounts.tsx, between Dashboard and Transactions):
+  - FlatList of account cards (name, type, balance colored green/red), net-worth
+    header with Add button, pull-to-refresh (RefreshControl), refetch on focus.
+  - AccountFormModal (src/components/AccountFormModal.tsx) for add/edit: name
+    input, type segmented picker (CHECKING/SAVINGS/CREDIT/CASH), balance input;
+    Save -> POST/PUT; Delete -> Alert.alert confirm -> DELETE.
+  - accountService.create/update/delete added.
+  - VERIFIED account write behavior: POST {name,type} -> 201 but balance is
+    IGNORED (created at 0; server-managed). DELETE -> 204 (works).
+    KNOWN BACKEND BUGS: PUT /api/accounts/{id} returns 500 (edit broken
+    server-side); initial balance cannot be set on create. UI is built correctly
+    and surfaces the error; will work once the backend is fixed.
 - Remaining tab screens (Transactions, Budgets, Alerts) are still placeholders.
 
 ## API Base URL

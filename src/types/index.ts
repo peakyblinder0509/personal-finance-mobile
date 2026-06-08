@@ -38,6 +38,16 @@ export interface Account {
   balance: number;
 }
 
+export const ACCOUNT_TYPES = ['CHECKING', 'SAVINGS', 'CREDIT', 'CASH'] as const;
+export type AccountType = (typeof ACCOUNT_TYPES)[number];
+
+/** Payload for creating/updating an account. */
+export interface AccountInput {
+  name: string;
+  type: AccountType;
+  balance: number;
+}
+
 export type TransactionType = 'INCOME' | 'EXPENSE';
 
 export interface Transaction {

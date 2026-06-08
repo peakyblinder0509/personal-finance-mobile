@@ -22,6 +22,15 @@ export default function AppTabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="accounts"
+        options={{
+          title: 'Accounts',
+          // AccountsScreen renders its own net-worth header; hide the native one.
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => <Ionicons name="wallet-outline" color={color} size={size} />,
+        }}
+      />
+      <Tabs.Screen
         name="transactions"
         options={{
           title: 'Transactions',
